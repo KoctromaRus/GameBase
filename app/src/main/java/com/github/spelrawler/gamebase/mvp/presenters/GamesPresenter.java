@@ -1,10 +1,12 @@
 package com.github.spelrawler.gamebase.mvp.presenters;
 
+import android.view.View;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.github.spelrawler.gamebase.app.GameBaseApp;
-import com.github.spelrawler.gamebase.models.Game;
 import com.github.spelrawler.gamebase.mvp.IgdbService;
+import com.github.spelrawler.gamebase.mvp.models.Game;
 import com.github.spelrawler.gamebase.mvp.views.GamesView;
 
 import java.util.List;
@@ -60,6 +62,10 @@ public class GamesPresenter extends MvpPresenter<GamesView> {
         } else {
             getViewState().addGames(games);
         }
+    }
+
+    public void onGameClick(View transitionView, Game game) {
+        getViewState().showGame(transitionView, game);
     }
 
     private void onError(String error) {

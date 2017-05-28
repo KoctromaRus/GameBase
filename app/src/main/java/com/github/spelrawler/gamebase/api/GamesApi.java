@@ -1,7 +1,7 @@
 package com.github.spelrawler.gamebase.api;
 
 import com.github.spelrawler.gamebase.api.models.queries.GamesQuery;
-import com.github.spelrawler.gamebase.models.Game;
+import com.github.spelrawler.gamebase.mvp.models.Game;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import android.support.v4.view.ViewPager;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.github.spelrawler.gamebase.R;
-import com.github.spelrawler.gamebase.models.Image;
+import com.github.spelrawler.gamebase.mvp.models.Image;
 import com.github.spelrawler.gamebase.mvp.presenters.ImagePresenter;
 import com.github.spelrawler.gamebase.mvp.views.ImagesView;
 import com.github.spelrawler.gamebase.ui.adapters.ImagesViewPagerAdapter;

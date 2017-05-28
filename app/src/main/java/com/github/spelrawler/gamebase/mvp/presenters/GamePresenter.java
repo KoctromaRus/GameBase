@@ -1,12 +1,15 @@
 package com.github.spelrawler.gamebase.mvp.presenters;
 
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.github.spelrawler.gamebase.app.GameBaseApp;
-import com.github.spelrawler.gamebase.models.Game;
 import com.github.spelrawler.gamebase.mvp.IgdbService;
+import com.github.spelrawler.gamebase.mvp.models.Company;
+import com.github.spelrawler.gamebase.mvp.models.Game;
+import com.github.spelrawler.gamebase.mvp.models.Image;
 import com.github.spelrawler.gamebase.mvp.views.GameView;
 
 import javax.inject.Inject;
@@ -35,12 +38,51 @@ public class GamePresenter extends MvpPresenter<GameView> implements IgdbService
         mIgdbService.getGame(mGameId, this);
     }
 
+    public void onVideoClick(String videoId) {
+        getViewState().showVideo(videoId);
+    }
+
+    public void onImageClick(View transitionView, Image[] images, int position) {
+        getViewState().showImage(transitionView, images, position);
+    }
+
     @Override
     public void onDataFetched(Game game) {
         if (game != null) {
             getViewState().setGame(game);
+            if (game.getDevelopers() != null) {
+                loadDeveloper(game.getDevelopers()[0]);
+            }
+            if (game.getPublishers() != null) {
+                loadPublisher(game.getPublishers()[0]);
+            }
         }
     }
+
+    private void loadPublisher(long id) {
+        mIgdbService.getCompany(id, new IgdbService.Callback<Company>() {
+            @Override
+            public void onDataFetched(Company company) {
+                getViewState().setPublisher(company);
+            }
+
+            @Override
+            public void onError(@Nullable String message) { }
+        });
+    }
+
+    private void loadDeveloper(long id) {
+        mIgdbService.getCompany(id, new IgdbService.Callback<Company>() {
+            @Override
+            public void onDataFetched(Company company) {
+                getViewState().setDeveloper(company);
+            }
+
+            @Override
+            public void onError(@Nullable String message) { }
+        });
+    }
+
 
     @Override
     public void onError(@Nullable String message) {

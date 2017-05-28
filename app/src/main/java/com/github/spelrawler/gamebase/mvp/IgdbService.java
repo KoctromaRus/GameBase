@@ -2,9 +2,12 @@ package com.github.spelrawler.gamebase.mvp;
 
 import android.support.annotation.Nullable;
 
+import com.github.spelrawler.gamebase.api.CompaniesApi;
 import com.github.spelrawler.gamebase.api.GamesApi;
+import com.github.spelrawler.gamebase.api.models.queries.CompaniesQuery;
 import com.github.spelrawler.gamebase.api.models.queries.GamesQuery;
-import com.github.spelrawler.gamebase.models.Game;
+import com.github.spelrawler.gamebase.mvp.models.Company;
+import com.github.spelrawler.gamebase.mvp.models.Game;
 
 import java.util.List;
 
@@ -18,9 +21,11 @@ import retrofit2.Response;
 public class IgdbService {
 
     private GamesApi mGamesApi;
+    private CompaniesApi mCompaniesApi;
 
-    public IgdbService(GamesApi gamesApi) {
+    public IgdbService(GamesApi gamesApi, CompaniesApi companiesApi) {
         mGamesApi = gamesApi;
+        mCompaniesApi = companiesApi;
     }
 
     public void getGames(Callback<List<Game>> callback) {
@@ -43,6 +48,15 @@ public class IgdbService {
 
     public void getGame(long id, Callback<Game> callback) {
         getGame(id, GamesQuery.create(), callback);
+    }
+
+    public void getCompany(long id, Callback<Company> callback) {
+        CompaniesQuery query = CompaniesQuery.create();
+        getCompany(id, query, callback);
+    }
+
+    public void getCompany(long id, CompaniesQuery query, Callback<Company> callback) {
+        mCompaniesApi.getCompany(id, query).enqueue(new CallbackListToObjectConverter<>(callback));
     }
 
     public class CallbackConverter<T> implements retrofit2.Callback<T> {

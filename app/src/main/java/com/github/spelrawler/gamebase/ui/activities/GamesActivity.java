@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.github.spelrawler.gamebase.R;
-import com.github.spelrawler.gamebase.models.Game;
+import com.github.spelrawler.gamebase.mvp.models.Game;
 import com.github.spelrawler.gamebase.mvp.presenters.GamesPresenter;
 import com.github.spelrawler.gamebase.mvp.views.GamesView;
 import com.github.spelrawler.gamebase.ui.adapters.GamesAdapter;
@@ -63,14 +63,19 @@ public class GamesActivity extends BaseActivity implements GamesView, GamesAdapt
     }
 
     @Override
+    public void showGame(View transitionView, Game game) {
+        Bundle options = TransitionUtils.createSingleSharedElementOptions(this, Pair.create(transitionView, getString(R.string.transition_cover)));
+        startActivity(GameActivity.createIntent(this, game.getId()), options);
+    }
+
+    @Override
     public void onScrollToBottom() {
         mGamesPresenter.loadMoreGames(mGamesAdapter.getItemCount());
     }
 
     @Override
     public void onGameClick(View coverView, Game game) {
-        Bundle options = TransitionUtils.createSingleSharedElementOptions(this, Pair.create(coverView, getString(R.string.transition_cover)));
-        startActivity(GameActivity.createIntent(this, game.getId()), options);
+        mGamesPresenter.onGameClick(coverView, game);
     }
 
 }

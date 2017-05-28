@@ -1,7 +1,7 @@
 package com.github.spelrawler.gamebase.api.models.queries;
 
 import com.github.spelrawler.gamebase.api.models.Filter;
-import com.github.spelrawler.gamebase.models.Game;
+import com.github.spelrawler.gamebase.mvp.models.Game;
 
 import java.util.List;
 
@@ -24,6 +24,7 @@ public class GamesQuery extends BaseQuery {
     public static GamesQuery create() {
         GamesQuery query = new GamesQuery();
         query.addFields(Game.Field.ALL);
+        query.setOrder(Game.Field.RATING, Order.ASC);
 
         return query;
     }
@@ -31,6 +32,7 @@ public class GamesQuery extends BaseQuery {
     public static GamesQuery create(String... fields) {
         GamesQuery query = new GamesQuery();
         query.addFields(fields);
+        query.setOrder(Game.Field.RATING, Order.DESC);
 
         return query;
     }

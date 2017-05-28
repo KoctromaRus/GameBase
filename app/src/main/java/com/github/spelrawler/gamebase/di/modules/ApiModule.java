@@ -1,5 +1,6 @@
 package com.github.spelrawler.gamebase.di.modules;
 
+import com.github.spelrawler.gamebase.api.CompaniesApi;
 import com.github.spelrawler.gamebase.api.GamesApi;
 
 import javax.inject.Singleton;
@@ -19,6 +20,12 @@ public class ApiModule {
     @Singleton
     public GamesApi provideGamesApi(Retrofit retrofit) {
         return retrofit.create(GamesApi.class);
+    }
+
+    @Provides
+    @Singleton
+    public CompaniesApi provideCompaniesApi(Retrofit retrofit) {
+        return retrofit.create(CompaniesApi.class);
     }
 
 }

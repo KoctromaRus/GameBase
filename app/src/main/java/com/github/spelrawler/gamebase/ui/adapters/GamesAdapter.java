@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.spelrawler.gamebase.R;
-import com.github.spelrawler.gamebase.models.Game;
+import com.github.spelrawler.gamebase.mvp.models.Game;
 import com.github.spelrawler.gamebase.ui.widgets.WebImageView;
 
 import java.util.ArrayList;

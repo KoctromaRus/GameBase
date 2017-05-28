@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.spelrawler.gamebase.R;
-import com.github.spelrawler.gamebase.models.Image;
+import com.github.spelrawler.gamebase.mvp.models.Image;
 import com.github.spelrawler.gamebase.ui.widgets.WebImageView;
 
 /**

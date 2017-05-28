@@ -2,7 +2,7 @@ package com.github.spelrawler.gamebase.mvp.presenters;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.github.spelrawler.gamebase.models.Image;
+import com.github.spelrawler.gamebase.mvp.models.Image;
 import com.github.spelrawler.gamebase.mvp.views.ImagesView;
 
 /**

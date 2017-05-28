@@ -1,4 +1,4 @@
-package com.github.spelrawler.gamebase.models;
+package com.github.spelrawler.gamebase.mvp.models;
 
 import android.support.annotation.Nullable;
 

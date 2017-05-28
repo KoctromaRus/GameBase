@@ -1,5 +1,6 @@
 package com.github.spelrawler.gamebase.di.modules;
 
+import com.github.spelrawler.gamebase.api.CompaniesApi;
 import com.github.spelrawler.gamebase.api.GamesApi;
 import com.github.spelrawler.gamebase.mvp.IgdbService;
 
@@ -17,8 +18,8 @@ public class IgdbModule {
 
     @Singleton
     @Provides
-    public IgdbService provideIgdbService(GamesApi gamesApi) {
-        return new IgdbService(gamesApi);
+    public IgdbService provideIgdbService(GamesApi gamesApi, CompaniesApi companiesApi) {
+        return new IgdbService(gamesApi, companiesApi);
     }
 
 }

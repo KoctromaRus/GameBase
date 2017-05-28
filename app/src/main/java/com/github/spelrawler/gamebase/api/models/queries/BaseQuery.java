@@ -3,6 +3,7 @@ package com.github.spelrawler.gamebase.api.models.queries;
 import com.github.spelrawler.gamebase.api.models.Filter;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Created by Spel on 28.05.2017.
@@ -11,6 +12,7 @@ import java.util.HashMap;
 public class BaseQuery extends HashMap<String, String> {
 
     private static final char COMA = ',';
+    private static final String FORMAT_SORT = "%s:%s";
 
     protected BaseQuery() {
 
@@ -50,9 +52,19 @@ public class BaseQuery extends HashMap<String, String> {
         put(Key.OFFSET, String.valueOf(offset));
     }
 
+    public void setOrder(String field, String order) {
+        put(Key.ORDER, String.format(Locale.getDefault(), FORMAT_SORT, field, order));
+    }
+
     public interface Key {
         String FIELDS = "fields";
         String OFFSET = "offset";
+        String ORDER = "order";
+    }
+
+    public interface Order {
+        String DESC = "desc";
+        String ASC = "asc";
     }
 
 }
