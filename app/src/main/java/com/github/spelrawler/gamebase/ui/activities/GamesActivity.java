@@ -18,7 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GamesActivity extends MvpAppCompatActivity implements GamesView {
+public class GamesActivity extends MvpAppCompatActivity implements GamesView, GamesAdapter.OnScrollToBottomListener {
 
     @InjectPresenter
     GamesPresenter mGamesPresenter;
@@ -39,6 +39,7 @@ public class GamesActivity extends MvpAppCompatActivity implements GamesView {
         setContentView(R.layout.activity_games);
         ButterKnife.bind(this);
         mGamesAdapter = new GamesAdapter();
+        mGamesAdapter.setOnScrollToBottomListener(this);
         mGamesRecyclerView.setAdapter(mGamesAdapter);
     }
 
@@ -52,4 +53,8 @@ public class GamesActivity extends MvpAppCompatActivity implements GamesView {
         mGamesAdapter.addGames(games);
     }
 
+    @Override
+    public void onScrollToBottom() {
+        mGamesPresenter.loadMoreGames(mGamesAdapter.getItemCount());
+    }
 }

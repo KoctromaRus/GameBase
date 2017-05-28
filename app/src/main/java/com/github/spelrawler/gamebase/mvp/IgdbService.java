@@ -22,7 +22,17 @@ public class IgdbService {
     }
 
     public void getGames(Callback<List<Game>> callback) {
-        mGamesApi.getGames(GamesQuery.create()).enqueue(new CallbackConverter<>(callback));
+        getGames(callback, GamesQuery.create());
+    }
+
+    public void getGames(Callback<List<Game>> callback, int offset) {
+        GamesQuery query = GamesQuery.create();
+        query.setOffset(offset);
+        getGames(callback, query);
+    }
+
+    public void getGames(Callback<List<Game>> callback, GamesQuery query) {
+        mGamesApi.getGames(query).enqueue(new CallbackConverter<>(callback));
     }
 
 

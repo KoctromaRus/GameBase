@@ -13,6 +13,7 @@ import com.github.spelrawler.gamebase.ui.widgets.WebImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,36 +23,76 @@ import butterknife.OnClick;
  * Created by Spel on 28.05.2017.
  */
 
-public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> {
+public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Game> mGames;
+    @Nullable
+    private OnScrollToBottomListener mOnScrollToBottomListener;
 
     public GamesAdapter() {
         setHasStableIds(true);
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return mGames == null || position == mGames.size() ? ViewType.PROGRESS : ViewType.GAME_CARD;
+    }
+
+    @Override
     public long getItemId(int position) {
-        return mGames.get(position).getId();
+        switch (getItemViewType(position)) {
+            case ViewType.GAME_CARD:
+                return mGames.get(position).getId();
+            default:
+                return Long.MAX_VALUE;
+        }
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_game, parent, false);
-        return new ViewHolder(itemView);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case ViewType.PROGRESS:
+                View progressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_progress, parent, false);
+                return new ProgressViewHolder(progressView);
+            case ViewType.GAME_CARD:
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_game, parent, false);
+                return new ViewHolder(itemView);
+            default:
+                return null;
+        }
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        switch (getItemViewType(position)) {
+            case ViewType.PROGRESS:
+                onBindProgressViewHolder();
+                break;
+            case ViewType.GAME_CARD:
+                onBindGameCardViewHolder((ViewHolder) holder, position);
+                break;
+        }
+
+    }
+
+    private void onBindGameCardViewHolder(ViewHolder holder, int position) {
         Game game = mGames.get(position);
 
         holder.title.setText(game.getName());
         holder.image.loadImage(game.getCoverUrl());
+        holder.rating.setText(String.format(Locale.getDefault(), "%.0f", game.getRating()));
+        holder.rating.setVisibility(game.getRating() == 0 ? View.GONE : View.VISIBLE);
+    }
+
+    private void onBindProgressViewHolder() {
+        if (mOnScrollToBottomListener != null) {
+            mOnScrollToBottomListener.onScrollToBottom();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mGames == null ? 0 : mGames.size();
+        return mGames == null ? 1 : mGames.size() + 1;
     }
 
     public void setGames(@Nullable List<Game> games) {
@@ -66,6 +107,10 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
 
     public void addGames(@Nullable List<Game> games) {
         if (games == null) return;
+        if (mGames == null) {
+            setGames(games);
+            return;
+        }
         mGames.addAll(games);
         notifyDataSetChanged();
     }
@@ -74,12 +119,18 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
 
     }
 
+    public void setOnScrollToBottomListener(@Nullable OnScrollToBottomListener onScrollToBottomListener) {
+        mOnScrollToBottomListener = onScrollToBottomListener;
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.text_title)
         TextView title;
         @BindView(R.id.image_cover)
         WebImageView image;
+        @BindView(R.id.text_rating)
+        TextView rating;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -93,6 +144,22 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
                 onGameClick(position);
             }
         }
+    }
+
+    class ProgressViewHolder extends RecyclerView.ViewHolder {
+
+        public ProgressViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    public interface OnScrollToBottomListener {
+        void onScrollToBottom();
+    }
+
+    public interface ViewType {
+        int GAME_CARD = 0;
+        int PROGRESS = 1;
     }
 
 }

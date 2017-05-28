@@ -46,8 +46,18 @@ public class GamesPresenter extends MvpPresenter<GamesView> {
         });
     }
 
-    public void loadMoreGames(int currentCunt) {
+    public void loadMoreGames(int currentCount) {
+        mIgdbService.getGames(new IgdbService.Callback<List<Game>>() {
+            @Override
+            public void onDataFetched(List<Game> games) {
+                onGamesLoaded(games, false);
+            }
 
+            @Override
+            public void onError(String message) {
+                GamesPresenter.this.onError(message);
+            }
+        }, currentCount);
     }
 
     private void onGamesLoaded(List<Game> games, boolean isFirstLoad) {

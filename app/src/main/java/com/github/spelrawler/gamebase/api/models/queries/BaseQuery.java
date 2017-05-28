@@ -46,8 +46,13 @@ public class BaseQuery extends HashMap<String, String> {
         return builder.toString();
     }
 
+    public void setOffset(int offset) {
+        put(Key.OFFSET, String.valueOf(offset));
+    }
+
     public interface Key {
         String FIELDS = "fields";
+        String OFFSET = "offset";
     }
 
 }
