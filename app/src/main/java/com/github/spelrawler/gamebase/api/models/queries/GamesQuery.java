@@ -28,4 +28,11 @@ public class GamesQuery extends BaseQuery {
         return query;
     }
 
+    public static GamesQuery create(String... fields) {
+        GamesQuery query = new GamesQuery();
+        query.addFields(fields);
+
+        return query;
+    }
+
 }

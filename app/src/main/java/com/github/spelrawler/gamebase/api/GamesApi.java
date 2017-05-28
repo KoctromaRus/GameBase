@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 
 /**
@@ -17,5 +18,8 @@ public interface GamesApi {
 
     @GET("games/")
     Call<List<Game>> getGames(@QueryMap GamesQuery query);
+
+    @GET("games/{id}/")
+    Call<List<Game>> getGame(@Path("id") long id, @QueryMap GamesQuery query);
 
 }

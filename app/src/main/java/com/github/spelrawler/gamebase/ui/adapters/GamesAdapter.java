@@ -2,6 +2,7 @@ package com.github.spelrawler.gamebase.ui.adapters;
 
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private List<Game> mGames;
     @Nullable
     private OnScrollToBottomListener mOnScrollToBottomListener;
+    @Nullable
+    private OnGameClickListener mOnGameClickListener;
 
     public GamesAdapter() {
         setHasStableIds(true);
@@ -72,7 +75,6 @@ public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 onBindGameCardViewHolder((ViewHolder) holder, position);
                 break;
         }
-
     }
 
     private void onBindGameCardViewHolder(ViewHolder holder, int position) {
@@ -82,6 +84,8 @@ public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         holder.image.loadImage(game.getCoverUrl());
         holder.rating.setText(String.format(Locale.getDefault(), "%.0f", game.getRating()));
         holder.rating.setVisibility(game.getRating() == 0 ? View.GONE : View.VISIBLE);
+        holder.summary.setText(game.getSummary());
+        holder.summary.setVisibility(TextUtils.isEmpty(game.getSummary()) ? View.GONE : View.VISIBLE);
     }
 
     private void onBindProgressViewHolder() {
@@ -115,12 +119,18 @@ public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    private void onGameClick(int position) {
-
+    private void onGameClick(View coverView, int position) {
+        if (mOnGameClickListener != null) {
+            mOnGameClickListener.onGameClick(coverView, mGames.get(position));
+        }
     }
 
     public void setOnScrollToBottomListener(@Nullable OnScrollToBottomListener onScrollToBottomListener) {
         mOnScrollToBottomListener = onScrollToBottomListener;
+    }
+
+    public void setOnGameClickListener(@Nullable OnGameClickListener onGameClickListener) {
+        mOnGameClickListener = onGameClickListener;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -131,6 +141,8 @@ public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         WebImageView image;
         @BindView(R.id.text_rating)
         TextView rating;
+        @BindView(R.id.text_summary)
+        TextView summary;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -141,7 +153,7 @@ public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public void onClick() {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                onGameClick(position);
+                onGameClick(image, position);
             }
         }
     }
@@ -155,6 +167,10 @@ public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public interface OnScrollToBottomListener {
         void onScrollToBottom();
+    }
+
+    public interface OnGameClickListener {
+        void onGameClick(View coverView, Game game);
     }
 
     public interface ViewType {

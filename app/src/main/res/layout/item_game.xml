@@ -3,38 +3,69 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="240dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    app:cardElevation="4dp">
 
-    <com.github.spelrawler.gamebase.ui.widgets.WebImageView
-        android:id="@+id/image_cover"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        tools:src="@mipmap/ic_launcher"/>
-
-    <TextView
-        android:id="@+id/text_title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:padding="16dp"
-        android:textColor="@color/white"
-        android:background="@color/black_semitransparent"
-        tools:text="Super Mario Bros."/>
-
-    <TextView
-        android:id="@+id/text_rating"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="right"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        android:background="@drawable/bg_red_circle"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        tools:text="99"/>
+        android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.github.spelrawler.gamebase.ui.widgets.WebImageView
+                android:id="@+id/image_cover"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:scaleType="centerCrop"
+                android:transitionName="@string/transition_cover"
+                tools:src="@mipmap/ic_launcher"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:layout_gravity="bottom"
+                android:background="@color/black_semitransparent">
+                <TextView
+                    android:id="@+id/text_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    tools:text="Super Mario Bros."/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:textSize="22sp"
+                    android:textColor="@color/white"
+                    tools:text="2010"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/text_rating"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="right"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:background="@drawable/bg_red_circle"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                tools:text="99"/>
+        </FrameLayout>
+        <TextView
+            android:id="@+id/text_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            tools:text="Skyward Sword is the sixteenth entry in the Legend of Zelda series. The game makes use of the Wii MotionPlus peripheral for sword fighting, with a revised Wii Remote pointing system used for targeting."/>
+    </LinearLayout>
 
     <View
         android:id="@+id/view_click"

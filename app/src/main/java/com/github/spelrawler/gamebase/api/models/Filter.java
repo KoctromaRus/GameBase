@@ -22,6 +22,10 @@ public class Filter {
         this(key, postfix, String.valueOf(value));
     }
 
+    public Filter(String key, String postfix, long value) {
+        this(key, postfix, String.valueOf(value));
+    }
+
     public Filter(String key, String postfix, String value) {
         mKey = key;
         mPostfix = postfix;
@@ -29,7 +33,7 @@ public class Filter {
     }
 
     public String getFormattedKey() {
-        return wrapWithBrackets(mKey) + wrapWithBrackets(mPostfix);
+        return FILTER + wrapWithBrackets(mKey) + wrapWithBrackets(mPostfix);
     }
 
     public String getValue() {

@@ -1,11 +1,10 @@
 package com.github.spelrawler.gamebase.ui.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.github.spelrawler.gamebase.R;
 
-public class SplashScreen extends AppCompatActivity{
+public class SplashScreen extends BaseActivity {
 
 
     @Override

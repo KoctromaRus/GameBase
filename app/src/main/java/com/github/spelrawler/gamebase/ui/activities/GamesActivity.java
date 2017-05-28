@@ -3,28 +3,33 @@ package com.github.spelrawler.gamebase.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
-import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.github.spelrawler.gamebase.R;
 import com.github.spelrawler.gamebase.models.Game;
 import com.github.spelrawler.gamebase.mvp.presenters.GamesPresenter;
 import com.github.spelrawler.gamebase.mvp.views.GamesView;
 import com.github.spelrawler.gamebase.ui.adapters.GamesAdapter;
+import com.github.spelrawler.gamebase.utils.TransitionUtils;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GamesActivity extends MvpAppCompatActivity implements GamesView, GamesAdapter.OnScrollToBottomListener {
+public class GamesActivity extends BaseActivity implements GamesView, GamesAdapter.OnScrollToBottomListener, GamesAdapter.OnGameClickListener {
 
     @InjectPresenter
     GamesPresenter mGamesPresenter;
 
     @BindView(R.id.recycler_games)
     RecyclerView mGamesRecyclerView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     private GamesAdapter mGamesAdapter;
 
@@ -38,8 +43,12 @@ public class GamesActivity extends MvpAppCompatActivity implements GamesView, Ga
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_games);
         ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
+
         mGamesAdapter = new GamesAdapter();
         mGamesAdapter.setOnScrollToBottomListener(this);
+        mGamesAdapter.setOnGameClickListener(this);
         mGamesRecyclerView.setAdapter(mGamesAdapter);
     }
 
@@ -57,4 +66,11 @@ public class GamesActivity extends MvpAppCompatActivity implements GamesView, Ga
     public void onScrollToBottom() {
         mGamesPresenter.loadMoreGames(mGamesAdapter.getItemCount());
     }
+
+    @Override
+    public void onGameClick(View coverView, Game game) {
+        Bundle options = TransitionUtils.createSingleSharedElementOptions(this, Pair.create(coverView, getString(R.string.transition_cover)));
+        startActivity(GameActivity.createIntent(this, game.getId()), options);
+    }
+
 }

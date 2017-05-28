@@ -26,12 +26,6 @@ public class GamesPresenter extends MvpPresenter<GamesView> {
         GameBaseApp.getAppComponent().inject(this);
     }
 
-    @Override
-    protected void onFirstViewAttach() {
-        super.onFirstViewAttach();
-        updateGames();
-    }
-
     public void updateGames() {
         mIgdbService.getGames(new IgdbService.Callback<List<Game>>() {
             @Override
@@ -47,7 +41,7 @@ public class GamesPresenter extends MvpPresenter<GamesView> {
     }
 
     public void loadMoreGames(int currentCount) {
-        mIgdbService.getGames(new IgdbService.Callback<List<Game>>() {
+        mIgdbService.getGames(currentCount, new IgdbService.Callback<List<Game>>() {
             @Override
             public void onDataFetched(List<Game> games) {
                 onGamesLoaded(games, false);
@@ -57,7 +51,7 @@ public class GamesPresenter extends MvpPresenter<GamesView> {
             public void onError(String message) {
                 GamesPresenter.this.onError(message);
             }
-        }, currentCount);
+        });
     }
 
     private void onGamesLoaded(List<Game> games, boolean isFirstLoad) {

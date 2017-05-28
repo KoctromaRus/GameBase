@@ -19,7 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.GamesActivity">
+        <activity
+            android:name=".ui.activities.GamesActivity"
+            android:label=""/>
+        <activity
+            android:name=".ui.activities.GameActivity"
+            android:label=""/>
+        <activity android:name=".ui.activities.ImagesActivity">
         </activity>
     </application>
 

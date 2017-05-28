@@ -5,13 +5,14 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 /**
  * Created by Spel on 28.05.2017.
  */
 
-public class Image {
+public class Image implements Serializable {
 
     private static final int DEFAULT_WIDTH = 600;
     private static final int DEFAULT_HEIGHT = 300;

@@ -1,5 +1,7 @@
 package com.github.spelrawler.gamebase.mvp;
 
+import android.support.annotation.Nullable;
+
 import com.github.spelrawler.gamebase.api.GamesApi;
 import com.github.spelrawler.gamebase.api.models.queries.GamesQuery;
 import com.github.spelrawler.gamebase.models.Game;
@@ -22,19 +24,26 @@ public class IgdbService {
     }
 
     public void getGames(Callback<List<Game>> callback) {
-        getGames(callback, GamesQuery.create());
+        getGames(GamesQuery.create(Game.Field.NAME, Game.Field.SUMMARY, Game.Field.ID, Game.Field.COVER, Game.Field.RATING), callback);
     }
 
-    public void getGames(Callback<List<Game>> callback, int offset) {
-        GamesQuery query = GamesQuery.create();
+    public void getGames(int offset, Callback<List<Game>> callback) {
+        GamesQuery query = GamesQuery.create(Game.Field.NAME, Game.Field.SUMMARY, Game.Field.ID, Game.Field.COVER, Game.Field.RATING);
         query.setOffset(offset);
-        getGames(callback, query);
+        getGames(query, callback);
     }
 
-    public void getGames(Callback<List<Game>> callback, GamesQuery query) {
+    public void getGames(GamesQuery query, Callback<List<Game>> callback) {
         mGamesApi.getGames(query).enqueue(new CallbackConverter<>(callback));
     }
 
+    public void getGame(long id, GamesQuery query, Callback<Game> callback) {
+        mGamesApi.getGame(id, query).enqueue(new CallbackListToObjectConverter<>(callback));
+    }
+
+    public void getGame(long id, Callback<Game> callback) {
+        getGame(id, GamesQuery.create(), callback);
+    }
 
     public class CallbackConverter<T> implements retrofit2.Callback<T> {
 
@@ -59,9 +68,36 @@ public class IgdbService {
         }
     }
 
+    public class CallbackListToObjectConverter<T> implements retrofit2.Callback<List<T>> {
+
+        private Callback<T> mCallback;
+
+        public CallbackListToObjectConverter(Callback<T> callback) {
+            mCallback = callback;
+        }
+
+        @Override
+        public void onResponse(Call<List<T>> call, Response<List<T>> response) {
+            if (response.errorBody() != null) {
+                mCallback.onError(response.errorBody().toString());
+            }
+            List<T> objects = response.body();
+            if (objects == null || objects.isEmpty()) {
+                mCallback.onError(null);
+            } else {
+                mCallback.onDataFetched(objects.get(0));
+            }
+        }
+
+        @Override
+        public void onFailure(Call<List<T>> call, Throwable t) {
+            mCallback.onError(t.getMessage());
+        }
+    }
+
     public interface Callback<T> {
         void onDataFetched(T t);
-        void onError(String message);
+        void onError(@Nullable String message);
     }
 
 
