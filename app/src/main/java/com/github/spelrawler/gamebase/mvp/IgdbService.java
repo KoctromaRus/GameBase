@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.github.spelrawler.gamebase.api.CompaniesApi;
 import com.github.spelrawler.gamebase.api.GamesApi;
+import com.github.spelrawler.gamebase.api.models.Filter;
 import com.github.spelrawler.gamebase.api.models.queries.CompaniesQuery;
 import com.github.spelrawler.gamebase.api.models.queries.GamesQuery;
 import com.github.spelrawler.gamebase.mvp.models.Company;
@@ -20,6 +21,9 @@ import retrofit2.Response;
 
 public class IgdbService {
 
+    private static final String[] DEFAULT_GAME_LIST_FIELDS = {Game.Field.NAME, Game.Field.SUMMARY,
+            Game.Field.ID, Game.Field.COVER, Game.Field.RATING};
+
     private GamesApi mGamesApi;
     private CompaniesApi mCompaniesApi;
 
@@ -29,12 +33,23 @@ public class IgdbService {
     }
 
     public void getGames(Callback<List<Game>> callback) {
-        getGames(GamesQuery.create(Game.Field.NAME, Game.Field.SUMMARY, Game.Field.ID, Game.Field.COVER, Game.Field.RATING), callback);
+        getGames(GamesQuery.create(DEFAULT_GAME_LIST_FIELDS), callback);
     }
 
-    public void getGames(int offset, Callback<List<Game>> callback) {
+    public void getGames(@Nullable List<Filter> filters, Callback<List<Game>> callback) {
+        GamesQuery query = GamesQuery.create(DEFAULT_GAME_LIST_FIELDS);
+        if (filters != null) {
+            query.addFilters(filters);
+        }
+        getGames(query, callback);
+    }
+
+    public void getGames(@Nullable List<Filter> filters, int offset, Callback<List<Game>> callback) {
         GamesQuery query = GamesQuery.create(Game.Field.NAME, Game.Field.SUMMARY, Game.Field.ID, Game.Field.COVER, Game.Field.RATING);
         query.setOffset(offset);
+        if (filters != null) {
+            query.addFilters(filters);
+        }
         getGames(query, callback);
     }
 

@@ -1,9 +1,10 @@
 package com.github.spelrawler.gamebase.di;
 
+import com.github.spelrawler.gamebase.di.modules.DataRepositoryModule;
+import com.github.spelrawler.gamebase.di.modules.IgdbModule;
 import com.github.spelrawler.gamebase.mvp.presenters.GamePresenter;
 import com.github.spelrawler.gamebase.mvp.presenters.GamesPresenter;
 import com.github.spelrawler.gamebase.ui.activities.SplashScreen;
-import com.github.spelrawler.gamebase.di.modules.IgdbModule;
 
 import javax.inject.Singleton;
 
@@ -14,7 +15,7 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {IgdbModule.class})
+@Component(modules = {IgdbModule.class, DataRepositoryModule.class})
 public interface AppComponent {
     void inject(SplashScreen splashScreen);
 

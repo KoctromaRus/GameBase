@@ -273,7 +273,7 @@ public class Game {
         String RATING = "rating";
         String POPULARITY = "popularity";
         String AGGREGATED_RATING = "aggregated_rating";
-        String RAITING_COUNT = "rating_count";
+        String RATING_COUNT = "rating_count";
         String GAME = "game";
         String DEVELOPERS = "developers";
         String PUBLISHERS = "publishers";

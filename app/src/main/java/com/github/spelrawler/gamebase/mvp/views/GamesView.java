@@ -24,5 +24,7 @@ public interface GamesView extends MvpView {
     void addGames(List<Game> games);
     @StateStrategyType(SkipStrategy.class)
     void showGame(View transitionView, Game game);
+    @StateStrategyType(SkipStrategy.class)
+    void showFilters();
 
 }

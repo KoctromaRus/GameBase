@@ -6,4 +6,5 @@
     <string name="label_developer">Developer:</string>
     <string name="label_publisher">Publisher:</string>
     <string name="label_n_a">n/a</string>
+    <string name="action_filter">Filter</string>
 </resources>

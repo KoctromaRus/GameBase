@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -53,6 +55,24 @@ public class GamesActivity extends BaseActivity implements GamesView, GamesAdapt
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.filter, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_filter:
+                mGamesPresenter.onFilterClick();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    @Override
     public void setGames(List<Game> games) {
         mGamesAdapter.setGames(games);
     }
@@ -66,6 +86,11 @@ public class GamesActivity extends BaseActivity implements GamesView, GamesAdapt
     public void showGame(View transitionView, Game game) {
         Bundle options = TransitionUtils.createSingleSharedElementOptions(this, Pair.create(transitionView, getString(R.string.transition_cover)));
         startActivity(GameActivity.createIntent(this, game.getId()), options);
+    }
+
+    @Override
+    public void showFilters() {
+        mGamesPresenter.onFiltersUpdate();
     }
 
     @Override

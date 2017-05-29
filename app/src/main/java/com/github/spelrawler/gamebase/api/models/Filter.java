@@ -1,22 +1,52 @@
 package com.github.spelrawler.gamebase.api.models;
 
+import com.github.spelrawler.gamebase.utils.StringUtils;
+
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Created by Spel on 28.05.2017.
  */
 
-public class Filter {
+public class Filter implements Serializable {
 
     public static final String GENRES = "genres";
+    public static final String RELEASE_DATE = "first_release_date";
+    public static final String RATING = "rating";
 
     private static final String OPEN_BRACKET = "[";
     private static final String CLOSE_BRACKET = "]";
     private static final String EQUAL = "=";
     private static final String FILTER = "filter";
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     private String mKey;
     private String mPostfix;
     private String mValue;
 
+
+    public static Filter createGenres(int... genreIds) {
+        return new Filter(GENRES, Postfix.ANY, StringUtils.listToString(genreIds));
+    }
+
+    public static Filter createMinRating(int rating) {
+        return new Filter(RATING, Postfix.GT, rating);
+    }
+
+    public static Filter createMaxRating(int rating) {
+        return new Filter(RATING, Postfix.LT, rating);
+    }
+
+    public static Filter createStartDate(Date date) {
+        return new Filter(RELEASE_DATE, Postfix.GT, DATE_FORMAT.format(date));
+    }
+
+    public static Filter createEndDate(Date date) {
+        return new Filter(RELEASE_DATE, Postfix.LT, DATE_FORMAT.format(date));
+    }
 
     public Filter(String key, String postfix, int value) {
         this(key, postfix, String.valueOf(value));
@@ -48,7 +78,7 @@ public class Filter {
 
         String EQ = "eq";                   //Equal: Exact match equal.
         String NOT_EQ = "not_eq";           //Not Equal: Exact match equal.
-        String QT = "gt";                   //Greater than works only on numbers.
+        String GT = "gt";                   //Greater than works only on numbers.
         String GTE = "gte";                 //Greater than or equal to works only on numbers.
         String LT = "lt";                   //Less than works only on numbers.
         String LTE = "lte";                 //Less than or equal to works only on numbers.

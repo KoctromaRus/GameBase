@@ -1,8 +1,10 @@
 package com.github.spelrawler.gamebase.api.models.queries;
 
 import com.github.spelrawler.gamebase.api.models.Filter;
+import com.github.spelrawler.gamebase.utils.StringUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -18,34 +20,18 @@ public class BaseQuery extends HashMap<String, String> {
 
     }
 
-    protected void addFilter(Filter filter) {
+    public void addFilters(List<Filter> filters) {
+        for (Filter filter : filters) {
+            addFilter(filter);
+        }
+    }
+
+    public void addFilter(Filter filter) {
         put(filter.getFormattedKey(), filter.getValue());
     }
 
     protected void addFields(String... fields) {
-        put(Key.FIELDS, listToString(fields));
-    }
-
-    protected static String listToString(int... list) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < list.length - 1; i++) {
-            builder.append(list[i]);
-            builder.append(COMA);
-        }
-        builder.append(list[list.length - 1]);
-
-        return builder.toString();
-    }
-
-    protected static String listToString(String... list) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < list.length - 1; i++) {
-            builder.append(list[i]);
-            builder.append(COMA);
-        }
-        builder.append(list[list.length - 1]);
-
-        return builder.toString();
+        put(Key.FIELDS, StringUtils.listToString(fields));
     }
 
     public void setOffset(int offset) {
