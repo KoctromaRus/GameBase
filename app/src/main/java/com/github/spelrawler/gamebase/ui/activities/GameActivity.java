@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -153,7 +152,7 @@ public class GameActivity extends BaseActivity implements GameView, MediaAdapter
 
     @Override
     public void showImage(View transitionView, Image[] images, int position) {
-        Bundle options = TransitionUtils.createSingleSharedElementOptions(this, Pair.create(transitionView, getString(R.string.transition_screenshot)));
+        Bundle options = TransitionUtils.createSingleSharedElementOptions(this, transitionView, getString(R.string.transition_screenshot));
         startActivity(ImagesActivity.createIntent(this, images, position), options);
     }
 
