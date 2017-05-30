@@ -164,10 +164,12 @@ public class GamesAdapter extends RecyclerView.Adapter<TransitionViewHolder> {
 
         @Override
         public Bundle getTransitionOptions(@NonNull Activity activity) {
-            return new TransitionBuilder()
-                    .add(image)
-                    .add(summary)
-                    .build(activity);
+            TransitionBuilder builder = new TransitionBuilder();
+            builder.add(image);
+            if (!TextUtils.isEmpty(summary.getText())) {
+                builder.add(summary);
+            }
+            return builder.build(activity);
         }
 
     }
