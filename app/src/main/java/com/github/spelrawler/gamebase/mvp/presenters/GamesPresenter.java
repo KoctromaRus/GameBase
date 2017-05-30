@@ -1,7 +1,5 @@
 package com.github.spelrawler.gamebase.mvp.presenters;
 
-import android.view.View;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.github.spelrawler.gamebase.app.GameBaseApp;
@@ -64,8 +62,8 @@ public class GamesPresenter extends MvpPresenter<GamesView> {
         }
     }
 
-    public void onGameClick(View transitionView, Game game) {
-        getViewState().showGame(transitionView, game);
+    public void onGameClick(Game game) {
+        getViewState().showGame(game);
     }
 
     private void onError(String error) {

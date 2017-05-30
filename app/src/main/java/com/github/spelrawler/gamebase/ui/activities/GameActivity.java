@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -25,9 +24,9 @@ import com.github.spelrawler.gamebase.mvp.models.Video;
 import com.github.spelrawler.gamebase.mvp.presenters.GamePresenter;
 import com.github.spelrawler.gamebase.mvp.views.GameView;
 import com.github.spelrawler.gamebase.ui.adapters.MediaAdapter;
+import com.github.spelrawler.gamebase.ui.adapters.TransitionRecyclerView;
 import com.github.spelrawler.gamebase.ui.widgets.WebImageView;
 import com.github.spelrawler.gamebase.utils.DateUtils;
-import com.github.spelrawler.gamebase.utils.TransitionUtils;
 
 import java.util.Locale;
 
@@ -52,13 +51,15 @@ public class GameActivity extends BaseActivity implements GameView, MediaAdapter
     @BindView(R.id.text_description)
     TextView mDescriptionTextView;
     @BindView(R.id.recycler_media)
-    RecyclerView mMediaRecyclerView;
+    TransitionRecyclerView mMediaRecyclerView;
     @BindView(R.id.text_release_date)
     TextView mReleaseDateTextView;
     @BindView(R.id.text_developer)
     TextView mDeveloperTextView;
     @BindView(R.id.text_publisher)
     TextView mPublisherTextView;
+
+    private MediaAdapter mMediaAdapter;
 
     @ProvidePresenter
     GamePresenter provideDetailsPresenter() {
@@ -79,6 +80,10 @@ public class GameActivity extends BaseActivity implements GameView, MediaAdapter
         ButterKnife.bind(this);
 
         setupToolbar();
+        mMediaAdapter = new MediaAdapter();
+        mMediaAdapter.setOnImageClickListener(this);
+        mMediaAdapter.setOnVideoClickListener(this);
+        mMediaRecyclerView.setAdapter(mMediaAdapter);
         mMediaRecyclerView.setNestedScrollingEnabled(false);
     }
 
@@ -123,15 +128,12 @@ public class GameActivity extends BaseActivity implements GameView, MediaAdapter
 
     private void setupMedia(Video[] videos, Image[] screenshots) {
         if (screenshots == null) return;
-        MediaAdapter adapter = new MediaAdapter(videos, screenshots);
-        adapter.setOnImageClickListener(this);
-        adapter.setOnVideoClickListener(this);
-        mMediaRecyclerView.setAdapter(adapter);
+        mMediaAdapter.setMedia(videos, screenshots);
     }
 
     @Override
-    public void onImageClick(View imageView, Image[] images, int position) {
-        mGamePresenter.onImageClick(imageView, images, position);
+    public void onImageClick(Image[] images, int position) {
+        mGamePresenter.onImageClick(images, position);
     }
 
     @Override
@@ -151,8 +153,8 @@ public class GameActivity extends BaseActivity implements GameView, MediaAdapter
     }
 
     @Override
-    public void showImage(View transitionView, Image[] images, int position) {
-        Bundle options = TransitionUtils.createSingleSharedElementOptions(this, transitionView, getString(R.string.transition_screenshot));
+    public void showImage(Image[] images, int position) {
+        Bundle options = mMediaRecyclerView.createTransitionBundleForPosition(this, mMediaAdapter.getAdapterPosition(position));
         startActivity(ImagesActivity.createIntent(this, images, position), options);
     }
 

@@ -1,5 +1,8 @@
 package com.github.spelrawler.gamebase.ui.adapters;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -10,6 +13,8 @@ import android.widget.TextView;
 
 import com.github.spelrawler.gamebase.R;
 import com.github.spelrawler.gamebase.mvp.models.Game;
+import com.github.spelrawler.gamebase.mvp.models.TransitionBuilder;
+import com.github.spelrawler.gamebase.ui.widgets.TransitionViewHolder;
 import com.github.spelrawler.gamebase.ui.widgets.WebImageView;
 
 import java.util.ArrayList;
@@ -24,7 +29,7 @@ import butterknife.OnClick;
  * Created by Spel on 28.05.2017.
  */
 
-public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class GamesAdapter extends RecyclerView.Adapter<TransitionViewHolder> {
 
     private List<Game> mGames;
     @Nullable
@@ -52,7 +57,7 @@ public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TransitionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case ViewType.PROGRESS:
                 View progressView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_progress, parent, false);
@@ -66,7 +71,7 @@ public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(TransitionViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case ViewType.PROGRESS:
                 onBindProgressViewHolder();
@@ -119,9 +124,9 @@ public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    private void onGameClick(View coverView, int position) {
+    private void onGameClick(int position) {
         if (mOnGameClickListener != null) {
-            mOnGameClickListener.onGameClick(coverView, mGames.get(position));
+            mOnGameClickListener.onGameClick(mGames.get(position));
         }
     }
 
@@ -133,7 +138,7 @@ public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mOnGameClickListener = onGameClickListener;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends TransitionViewHolder {
 
         @BindView(R.id.text_title)
         TextView title;
@@ -144,25 +149,39 @@ public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         @BindView(R.id.text_summary)
         TextView summary;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         @OnClick(R.id.view_click)
-        public void onClick() {
+        void onClick() {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                onGameClick(image, position);
+                onGameClick(position);
             }
         }
+
+        @Override
+        public Bundle getTransitionOptions(@NonNull Activity activity) {
+            return new TransitionBuilder()
+                    .add(image, activity.getString(R.string.transition_cover))
+                    .build(activity);
+        }
+
     }
 
-    class ProgressViewHolder extends RecyclerView.ViewHolder {
+    class ProgressViewHolder extends TransitionViewHolder {
 
-        public ProgressViewHolder(View itemView) {
+        ProgressViewHolder(View itemView) {
             super(itemView);
         }
+
+        @Override
+        public Bundle getTransitionOptions(@NonNull Activity activity) {
+            return null;
+        }
+
     }
 
     public interface OnScrollToBottomListener {
@@ -170,10 +189,10 @@ public class GamesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public interface OnGameClickListener {
-        void onGameClick(View coverView, Game game);
+        void onGameClick(Game game);
     }
 
-    public interface ViewType {
+    private interface ViewType {
         int GAME_CARD = 0;
         int PROGRESS = 1;
     }

@@ -1,7 +1,5 @@
 package com.github.spelrawler.gamebase.mvp.views;
 
-import android.view.View;
-
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndStrategy;
@@ -23,6 +21,6 @@ public interface GamesView extends MvpView {
     @StateStrategyType(AddToEndStrategy.class)
     void addGames(List<Game> games);
     @StateStrategyType(SkipStrategy.class)
-    void showGame(View transitionView, Game game);
+    void showGame(Game game);
 
 }

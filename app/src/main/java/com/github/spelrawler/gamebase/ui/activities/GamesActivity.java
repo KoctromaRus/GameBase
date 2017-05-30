@@ -3,10 +3,7 @@ package com.github.spelrawler.gamebase.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.util.Pair;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.github.spelrawler.gamebase.R;
@@ -14,7 +11,7 @@ import com.github.spelrawler.gamebase.mvp.models.Game;
 import com.github.spelrawler.gamebase.mvp.presenters.GamesPresenter;
 import com.github.spelrawler.gamebase.mvp.views.GamesView;
 import com.github.spelrawler.gamebase.ui.adapters.GamesAdapter;
-import com.github.spelrawler.gamebase.utils.TransitionUtils;
+import com.github.spelrawler.gamebase.ui.adapters.TransitionRecyclerView;
 
 import java.util.List;
 
@@ -27,7 +24,7 @@ public class GamesActivity extends BaseActivity implements GamesView, GamesAdapt
     GamesPresenter mGamesPresenter;
 
     @BindView(R.id.recycler_games)
-    RecyclerView mGamesRecyclerView;
+    TransitionRecyclerView mGamesRecyclerView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -63,8 +60,8 @@ public class GamesActivity extends BaseActivity implements GamesView, GamesAdapt
     }
 
     @Override
-    public void showGame(View transitionView, Game game) {
-        Bundle options = TransitionUtils.createSingleSharedElementOptions(this, Pair.create(transitionView, getString(R.string.transition_cover)));
+    public void showGame(Game game) {
+        Bundle options = mGamesRecyclerView.createTransitionBundleForItemId(this, game.getId());
         startActivity(GameActivity.createIntent(this, game.getId()), options);
     }
 
@@ -74,8 +71,8 @@ public class GamesActivity extends BaseActivity implements GamesView, GamesAdapt
     }
 
     @Override
-    public void onGameClick(View coverView, Game game) {
-        mGamesPresenter.onGameClick(coverView, game);
+    public void onGameClick(Game game) {
+        mGamesPresenter.onGameClick(game);
     }
 
 }

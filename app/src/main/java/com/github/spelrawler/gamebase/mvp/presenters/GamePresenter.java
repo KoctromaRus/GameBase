@@ -1,7 +1,6 @@
 package com.github.spelrawler.gamebase.mvp.presenters;
 
 import android.support.annotation.Nullable;
-import android.view.View;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -42,8 +41,8 @@ public class GamePresenter extends MvpPresenter<GameView> implements IgdbService
         getViewState().showVideo(videoId);
     }
 
-    public void onImageClick(View transitionView, Image[] images, int position) {
-        getViewState().showImage(transitionView, images, position);
+    public void onImageClick(Image[] images, int position) {
+        getViewState().showImage(images, position);
     }
 
     @Override

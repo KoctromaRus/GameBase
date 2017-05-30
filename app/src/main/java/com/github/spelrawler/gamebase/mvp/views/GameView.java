@@ -1,7 +1,6 @@
 package com.github.spelrawler.gamebase.mvp.views;
 
 import android.support.annotation.NonNull;
-import android.view.View;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
@@ -25,6 +24,6 @@ public interface GameView extends MvpView {
     @StateStrategyType(SkipStrategy.class)
     void showVideo(String videoId);
     @StateStrategyType(SkipStrategy.class)
-    void showImage(View transitionView, Image[] images, int position);
+    void showImage(Image[] images, int position);
 
 }

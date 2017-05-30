@@ -118,7 +118,7 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="16dp"/>
 
-            <android.support.v7.widget.RecyclerView
+            <com.github.spelrawler.gamebase.ui.adapters.TransitionRecyclerView
                 android:id="@+id/recycler_media"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/media_height"
