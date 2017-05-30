@@ -64,6 +64,7 @@
             android:padding="16dp"
             android:maxLines="3"
             android:ellipsize="end"
+            android:transitionName="@string/transition_summary"
             tools:text="Skyward Sword is the sixteenth entry in the Legend of Zelda series. The game makes use of the Wii MotionPlus peripheral for sword fighting, with a revised Wii Remote pointing system used for targeting."/>
     </LinearLayout>
 

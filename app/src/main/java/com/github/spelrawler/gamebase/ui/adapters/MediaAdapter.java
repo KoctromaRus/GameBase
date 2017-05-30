@@ -123,7 +123,7 @@ public class MediaAdapter extends RecyclerView.Adapter<TransitionViewHolder>  {
         @Override
         public Bundle getTransitionOptions(@NonNull Activity activity) {
             return new TransitionBuilder()
-                    .add(image, activity.getString(R.string.transition_screenshot))
+                    .add(image)
                     .build(activity);
         }
 

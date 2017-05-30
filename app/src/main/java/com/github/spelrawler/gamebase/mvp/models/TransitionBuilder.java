@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ public class TransitionBuilder {
 
     private List<Pair<View, String>> mPairs = new ArrayList<>();
 
-    public TransitionBuilder add(View view, String tag) {
-        mPairs.add(Pair.create(view, tag));
+    public TransitionBuilder add(View view) {
+        mPairs.add(Pair.create(view, ViewCompat.getTransitionName(view)));
         return this;
     }
 

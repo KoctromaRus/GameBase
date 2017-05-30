@@ -50,6 +50,12 @@ public class GamesActivity extends BaseActivity implements GamesView, GamesAdapt
     }
 
     @Override
+    public void supportFinishAfterTransition() {
+        super.supportFinishAfterTransition();
+        mGamesAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void setGames(List<Game> games) {
         mGamesAdapter.setGames(games);
     }

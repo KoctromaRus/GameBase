@@ -10,6 +10,8 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.transition.AutoTransition;
+import android.transition.Transition;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -33,7 +35,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GameActivity extends BaseActivity implements GameView, MediaAdapter.OnImageClickListener, MediaAdapter.OnVideoClickListener {
+public class GameActivity extends BaseActivity implements GameView, MediaAdapter.OnImageClickListener, MediaAdapter.OnVideoClickListener, Transition.TransitionListener {
 
     private static final String EXTRA_GAME_ID = "gameId";
     private static final String FORMAT_APP_URI = "vnd.youtube:%s";
@@ -72,6 +74,7 @@ public class GameActivity extends BaseActivity implements GameView, MediaAdapter
 
         return intent;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +159,31 @@ public class GameActivity extends BaseActivity implements GameView, MediaAdapter
     public void showImage(Image[] images, int position) {
         Bundle options = mMediaRecyclerView.createTransitionBundleForPosition(this, mMediaAdapter.getAdapterPosition(position));
         startActivity(ImagesActivity.createIntent(this, images, position), options);
+    }
+
+    @Override
+    public void onTransitionStart(Transition transition) {
+
+    }
+
+    @Override
+    public void onTransitionEnd(Transition transition) {
+
+    }
+
+    @Override
+    public void onTransitionCancel(Transition transition) {
+
+    }
+
+    @Override
+    public void onTransitionPause(Transition transition) {
+
+    }
+
+    @Override
+    public void onTransitionResume(Transition transition) {
+
     }
 
 }

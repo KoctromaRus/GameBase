@@ -2,9 +2,11 @@ package com.github.spelrawler.gamebase.ui.widgets;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -26,7 +28,21 @@ public class WebImageView extends AppCompatImageView {
     }
 
     public void loadImage(String url) {
-        Picasso.with(getContext()).load(url).into(this);
+        Picasso.with(getContext()).load(url).into(this, new Callback() {
+            @Override
+            public void onSuccess() {
+                if (getContext() instanceof AppCompatActivity) {
+                    ((AppCompatActivity) getContext()).supportStartPostponedEnterTransition();
+                }
+            }
+
+            @Override
+            public void onError() {
+                if (getContext() instanceof AppCompatActivity) {
+                    ((AppCompatActivity) getContext()).supportStartPostponedEnterTransition();
+                }
+            }
+        });
     }
 
 }

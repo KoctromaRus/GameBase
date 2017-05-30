@@ -2,6 +2,7 @@
     <string name="app_name">GameBase</string>
     <string name="transition_cover">transitionCover</string>
     <string name="transition_screenshot">transitionScreenshot</string>
+    <string name="transition_summary">transitionSummary</string>
     <string name="label_release_date">"Release date: "</string>
     <string name="label_developer">Developer:</string>
     <string name="label_publisher">Publisher:</string>

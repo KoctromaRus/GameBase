@@ -165,7 +165,8 @@ public class GamesAdapter extends RecyclerView.Adapter<TransitionViewHolder> {
         @Override
         public Bundle getTransitionOptions(@NonNull Activity activity) {
             return new TransitionBuilder()
-                    .add(image, activity.getString(R.string.transition_cover))
+                    .add(image)
+                    .add(summary)
                     .build(activity);
         }
 
